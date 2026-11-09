@@ -1,0 +1,918 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#E60019">
+
+  <title>SACHA_LINN — Boutique privée</title>
+
+  <style>
+    :root {
+      --red: #E60019;
+      --black: #080808;
+      --white: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--red);
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 24px 20px 35px;
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* BARRE DU HAUT */
+
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      padding-bottom: 12px;
+    }
+
+    .topbar svg {
+      width: 25px;
+      height: 25px;
+      stroke: white;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    /* COEURS NOIRS */
+
+    .hearts-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 20px;
+      margin: 16px 0;
+      pointer-events: none;
+    }
+
+    .hearts-row.center {
+      justify-content: center;
+      gap: 65px;
+    }
+
+    .hearts-row.spread {
+      justify-content: space-around;
+    }
+
+    .heart {
+      display: block;
+      width: 32px;
+      height: 32px;
+      fill: var(--black);
+      flex-shrink: 0;
+    }
+
+    .heart.small {
+      width: 25px;
+      height: 25px;
+    }
+
+    .heart.large {
+      width: 38px;
+      height: 38px;
+    }
+
+    /* ACCUEIL */
+
+    header {
+      text-align: center;
+      padding: 22px 0 35px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 24px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(27px, 8vw, 43px);
+      font-weight: 500;
+      letter-spacing: 4px;
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      margin-top: 28px;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    .intro {
+      margin: 35px 0 0;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    /* CARTES D'ACCUEIL */
+
+    .cards {
+      display: grid;
+      gap: 22px;
+      margin: 28px 0;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: 46px 2px minmax(0, 1fr) 42px;
+      align-items: center;
+      column-gap: 12px;
+      width: 100%;
+      min-height: 140px;
+      padding: 20px 17px;
+      border: 2px solid white;
+      border-radius: 30px;
+      color: white;
+      text-decoration: none;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      stroke: white;
+      fill: none;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .separator {
+      width: 2px;
+      height: 72px;
+      background: white;
+    }
+
+    .card-text {
+      min-width: 0;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--black);
+      color: white;
+    }
+
+    .arrow svg {
+      width: 19px;
+      height: 19px;
+      stroke: white;
+      fill: none;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* BOUTON DECOUVRIR */
+
+    .discover {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 13px;
+      width: 80%;
+      min-height: 63px;
+      margin: 30px auto;
+      border: 2px solid white;
+      border-radius: 50px;
+      background: var(--black);
+      color: white;
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .discover svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2;
+    }
+
+    /* BOUTIQUE */
+
+    .shop {
+      padding-top: 35px;
+      scroll-margin-top: 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 27px;
+      margin: 0 0 12px;
+    }
+
+    .section-description {
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0 0 28px;
+    }
+
+    .category-title {
+      font-size: 22px;
+      margin: 35px 0 18px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .product {
+      min-width: 0;
+      border: 2px solid white;
+      border-radius: 25px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .placeholder {
+      aspect-ratio: 3 / 4;
+      border-radius: 17px;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .placeholder svg {
+      width: 43px;
+      height: 43px;
+      stroke: white;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .placeholder span {
+      font-size: 12px;
+      line-height: 1.5;
+      letter-spacing: 1px;
+    }
+
+    .product h3 {
+      font-size: 15px;
+      margin: 14px 2px 7px;
+    }
+
+    .product-description {
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0 2px 12px;
+      min-height: 36px;
+    }
+
+    .price {
+      font-size: 17px;
+      font-weight: bold;
+      margin: 0 2px 12px;
+    }
+
+    .product-button {
+      display: block;
+      width: 100%;
+      padding: 12px 6px;
+      border: 1px solid white;
+      border-radius: 30px;
+      background: var(--black);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+
+    .shop-note {
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 25px 0;
+    }
+
+    /* ESPACE VIP */
+
+    .vip {
+      margin-top: 45px;
+      padding: 35px 12px;
+      border-top: 1px solid white;
+      text-align: center;
+      scroll-margin-top: 20px;
+    }
+
+    .vip-heading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .vip-heading h2 {
+      font-size: 25px;
+      margin: 0;
+    }
+
+    .vip-heading svg {
+      width: 32px;
+      height: 32px;
+      color: white;
+      stroke: white;
+      fill: none;
+    }
+
+    .vip p {
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* BAS DE PAGE */
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 13px;
+      margin: 26px 0;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      background: var(--black);
+      border-radius: 50%;
+    }
+
+    .dot.active {
+      background: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 0 15px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 380px) {
+      .page {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .card {
+        grid-template-columns: 38px 2px minmax(0, 1fr) 38px;
+        column-gap: 9px;
+        padding: 18px 12px;
+      }
+
+      .card-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .card h2 {
+        font-size: 17px;
+      }
+
+      .card p {
+        font-size: 12px;
+      }
+
+      .separator {
+        height: 65px;
+      }
+
+      .arrow {
+        width: 38px;
+        height: 38px;
+      }
+
+      h1 {
+        letter-spacing: 2px;
+      }
+
+      .products {
+        gap: 10px;
+      }
+
+      .product {
+        padding: 8px;
+      }
+
+      .product h3 {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ICONES -->
+
+  <svg width="0" height="0"
+       style="position:absolute"
+       aria-hidden="true">
+
+    <defs>
+
+      <symbol id="coeur" viewBox="0 0 24 24">
+        <path d="
+          M12 21
+          C9 18.5 2 13.5 2 8.5
+          C2 2.5 9 1.5 12 6
+          C15 1.5 22 2.5 22 8.5
+          C22 13.5 15 18.5 12 21
+          Z
+        "/>
+      </symbol>
+
+      <symbol id="photo-icon" viewBox="0 0 24 24">
+        <rect x="3" y="5"
+              width="18" height="16" rx="2"/>
+        <circle cx="16" cy="10" r="2"/>
+        <path d="m3 18 6-6 4 4 3-3 5 5"/>
+      </symbol>
+
+      <symbol id="crown-icon" viewBox="0 0 48 48">
+        <path
+          d="
+            M7 15 L13 27 L19 14
+            L24 27 L29 14 L35 27
+            L41 15 L37 37 L11 37 Z
+          "
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+
+        <circle cx="7" cy="12" r="2.3"
+                fill="currentColor" stroke="none"/>
+        <circle cx="19" cy="11" r="2.3"
+                fill="currentColor" stroke="none"/>
+        <circle cx="24" cy="7" r="2.3"
+                fill="currentColor" stroke="none"/>
+        <circle cx="29" cy="11" r="2.3"
+                fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="12" r="2.3"
+                fill="currentColor" stroke="none"/>
+
+        <path d="M11 40 H37"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"/>
+      </symbol>
+
+      <symbol id="plane-icon" viewBox="0 0 24 24">
+        <path d="M22 2 11 13"/>
+        <path d="M22 2 15 22l-4-9-9-4z"/>
+      </symbol>
+
+      <symbol id="arrow-icon" viewBox="0 0 24 24">
+        <path d="M9 4 L17 12 L9 20"/>
+      </symbol>
+
+    </defs>
+
+  </svg>
+
+  <div class="page">
+
+    <!-- BARRE SUPERIEURE -->
+
+    <div class="topbar">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="
+          M18 8a6 6 0 0 0-12 0
+          c0 7-3 7-3 9h18
+          c0-2-3-2-3-9
+        "/>
+        <path d="M10 21h4"/>
+      </svg>
+
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="9" r="3"/>
+        <path d="M5 20c1-7 13-7 14 0"/>
+      </svg>
+    </div>
+
+    <!-- 2 COEURS -->
+
+    <div class="hearts-row">
+      <svg class="heart large"><use href="#coeur"/></svg>
+      <svg class="heart"><use href="#coeur"/></svg>
+    </div>
+
+    <!-- ACCUEIL -->
+
+    <header>
+      <svg class="logo" viewBox="0 0 24 24"
+           aria-hidden="true">
+        <use href="#plane-icon"/>
+      </svg>
+
+      <h1>SACHA_LINN</h1>
+
+      <div class="subtitle">
+        THE PRIVATE COLLECTION
+      </div>
+
+      <p class="intro">
+        Un univers exclusif.<br>
+        Des collections à découvrir.
+      </p>
+    </header>
+
+    <!-- 3 COEURS -->
+
+    <div class="hearts-row spread">
+      <svg class="heart"><use href="#coeur"/></svg>
+      <svg class="heart small"><use href="#coeur"/></svg>
+      <svg class="heart"><use href="#coeur"/></svg>
+    </div>
+
+    <!-- CARTES PRINCIPALES -->
+
+    <div class="cards">
+
+      <a class="card" href="#boutique">
+        <svg class="card-icon" viewBox="0 0 24 24"
+             aria-hidden="true">
+          <use href="#photo-icon"/>
+        </svg>
+
+        <div class="separator"></div>
+
+        <div class="card-text">
+          <h2>Nos collections</h2>
+          <p>
+            Découvrez nos photos
+            individuelles et nos packs.
+          </p>
+        </div>
+
+        <span class="arrow">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#arrow-icon"/>
+          </svg>
+        </span>
+      </a>
+
+      <a class="card" href="#vip">
+        <svg class="card-icon" viewBox="0 0 48 48"
+             aria-hidden="true">
+          <use href="#crown-icon"/>
+        </svg>
+
+        <div class="separator"></div>
+
+        <div class="card-text">
+          <h2>Espace VIP</h2>
+          <p>
+            Une expérience réservée
+            à nos membres.
+          </p>
+        </div>
+
+        <span class="arrow">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <use href="#arrow-icon"/>
+          </svg>
+        </span>
+      </a>
+
+    </div>
+
+    <!-- 2 COEURS -->
+
+    <div class="hearts-row center">
+      <svg class="heart small"><use href="#coeur"/></svg>
+      <svg class="heart"><use href="#coeur"/></svg>
+    </div>
+
+    <!-- BOUTON DECOUVRIR -->
+
+    <a class="discover" href="#boutique">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="#plane-icon"/>
+      </svg>
+      Découvrir
+    </a>
+
+    <!-- 3 COEURS -->
+
+    <div class="hearts-row spread">
+      <svg class="heart"><use href="#coeur"/></svg>
+      <svg class="heart small"><use href="#coeur"/></svg>
+      <svg class="heart"><use href="#coeur"/></svg>
+    </div>
+
+    <div class="dots" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot active"></span>
+      <span class="dot"></span>
+    </div>
+
+    <!-- BOUTIQUE -->
+
+    <main class="shop" id="boutique">
+
+      <h2 class="section-title">La Boutique</h2>
+
+      <p class="section-description">
+        Explorez notre univers privé.<br>
+        Choisissez une photo ou un pack.
+      </p>
+
+      <h3 class="category-title">
+        Photos individuelles
+      </h3>
+
+      <div class="products" id="photos-list"></div>
+
+      <h3 class="category-title">
+        Packs de photos
+      </h3>
+
+      <div class="products" id="packs-list"></div>
+
+      <p class="shop-note" id="shop-status">
+        Boutique en préparation.<br>
+        Les prix affichés sont provisoires.<br>
+        Aucun achat n'est encore possible.
+      </p>
+
+    </main>
+
+    <!-- ESPACE VIP -->
+
+    <section class="vip" id="vip">
+
+      <div class="vip-heading">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <use href="#crown-icon"/>
+        </svg>
+        <h2>Espace VIP</h2>
+      </div>
+
+      <p>
+        Un espace exclusif SACHA_LINN.<br>
+        Accès réservé à nos futurs membres.
+      </p>
+
+      <p>Bientôt disponible.</p>
+    </section>
+
+    <!-- 2 DERNIERS COEURS -->
+
+    <div class="hearts-row spread">
+      <svg class="heart"><use href="#coeur"/></svg>
+      <svg class="heart large"><use href="#coeur"/></svg>
+    </div>
+
+    <footer>
+      © SACHA_LINN — PRIVATE EXPERIENCE
+    </footer>
+
+  </div>
+
+  <script>
+    /*
+      SACHA_LINN — Connexion Supabase
+
+      Remplacer uniquement les deux valeurs
+      ci-dessous par celles de ton projet.
+
+      Ne jamais utiliser une clé secret
+      ou service_role dans ce fichier.
+    */
+
+    const SUPABASE_URL =
+      "https://uwkvsrpfwoyxikxmvxxr.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_B4BJ6mipI9RgIBqPd3gocA_YBHefQBN";
+
+    /*
+      Produits provisoires affichés
+      tant que les produits Supabase
+      ne sont pas actifs.
+    */
+
+    const demoProducts = [
+      {
+        name: "Photo Signature 01",
+        description: "Une photo exclusive.",
+        price_stars: 25,
+        product_type: "photo"
+      },
+      {
+        name: "Photo Signature 02",
+        description: "Une création unique.",
+        price_stars: 25,
+        product_type: "photo"
+      },
+      {
+        name: "Pack Signature",
+        description: "Exemple : 5 photos exclusives.",
+        price_stars: 100,
+        product_type: "pack"
+      },
+      {
+        name: "Pack Prestige",
+        description: "Exemple : 10 photos exclusives.",
+        price_stars: 180,
+        product_type: "pack"
+      }
+    ];
+
+    const photoIcon = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="#photo-icon"></use>
+      </svg>
+    `;
+
+    function createProductCard(product) {
+      const article = document.createElement("article");
+      article.className = "product";
+
+      const placeholder = document.createElement("div");
+      placeholder.className = "placeholder";
+      placeholder.innerHTML = photoIcon;
+
+      const placeholderText = document.createElement("span");
+      placeholderText.textContent =
+        product.product_type === "pack"
+          ? "Pack à venir"
+          : "Bientôt disponible";
+
+      placeholder.appendChild(placeholderText);
+
+      const title = document.createElement("h3");
+      title.textContent = product.name;
+
+      const description = document.createElement("p");
+      description.className = "product-description";
+      description.textContent = product.description || "";
+
+      const price = document.createElement("p");
+      price.className = "price";
+      price.textContent = `⭐ ${product.price_stars} Stars`;
+
+      const button = document.createElement("button");
+      button.className = "product-button";
+      button.textContent = "Bientôt disponible";
+      button.disabled = true;
+
+      article.append(
+        placeholder,
+        title,
+        description,
+        price,
+        button
+      );
+
+      return article;
+    }
+
+    function displayProducts(products) {
+      const photosList =
+        document.getElementById("photos-list");
+
+      const packsList =
+        document.getElementById("packs-list");
+
+      photosList.replaceChildren();
+      packsList.replaceChildren();
+
+      products.forEach((product) => {
+        const card = createProductCard(product);
+
+        if (product.product_type === "photo") {
+          photosList.appendChild(card);
+        } else if (product.product_type === "pack") {
+          packsList.appendChild(card);
+        }
+      });
+    }
+
+    async function loadProducts() {
+      displayProducts(demoProducts);
+
+      const configured =
+        SUPABASE_URL.startsWith("https://") &&
+        SUPABASE_PUBLISHABLE_KEY.startsWith(
+          "sb_publishable_"
+        );
+
+      if (!configured) {
+        return;
+      }
+
+      try {
+        const endpoint =
+          `${SUPABASE_URL.replace(/\/$/, "")}` +
+          `/rest/v1/collections` +
+          `?select=name,description,price_stars,product_type` +
+          `&is_active=eq.true`;
+
+        const response = await fetch(endpoint, {
+          headers: {
+            apikey: SUPABASE_PUBLISHABLE_KEY
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Erreur Supabase : ${response.status}`
+          );
+        }
+
+        const products = await response.json();
+
+        if (products.length > 0) {
+          displayProducts(products);
+
+          document.getElementById(
+            "shop-status"
+          ).textContent =
+            "Produits chargés depuis Supabase. " +
+            "Les achats ne sont pas encore activés.";
+        }
+
+      } catch (error) {
+        console.error(
+          "Connexion Supabase :",
+          error
+        );
+
+        document.getElementById(
+          "shop-status"
+        ).textContent =
+          "Mode démonstration : " +
+          "connexion aux produits indisponible.";
+      }
+    }
+
+    loadProducts();
+  </script>
+
+</body>
+</html>
