@@ -3,16 +3,15 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#E60019">
-
-  <title>SACHA_LINN — Boutique privée</title>
+  <title>SACHA_LINN — The Private Collection</title>
 
   <style>
     :root {
       --red: #E60019;
+      --white: #ffffff;
       --black: #080808;
-      --white: #FFFFFF;
     }
 
     * {
@@ -25,123 +24,92 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
       background: var(--red);
       color: var(--white);
       font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
     }
 
-    .page {
-      width: 100%;
-      max-width: 520px;
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 24px 20px 35px;
-      overflow: hidden;
+    button, a {
+      -webkit-tap-highlight-color: transparent;
     }
 
     a {
       color: inherit;
+      text-decoration: none;
     }
 
-    /* BARRE DU HAUT */
+    /* COEURS ANIMES EN ARRIERE-PLAN */
 
-    .topbar {
-      display: flex;
-      justify-content: flex-end;
-      gap: 20px;
-      padding-bottom: 12px;
-    }
-
-    .topbar svg {
-      width: 25px;
-      height: 25px;
-      stroke: white;
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    /* COEURS NOIRS */
-
-    .hearts-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      min-height: 42px;
-      padding: 0 20px;
-      margin: 16px 0;
+    #heart-world {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
     }
 
-    .hearts-row.center {
-      justify-content: center;
-      gap: 65px;
-    }
-
-    .hearts-row.spread {
-      justify-content: space-around;
-    }
-
-    .heart {
+    #heart-canvas {
       display: block;
-      width: 32px;
-      height: 32px;
-      fill: var(--black);
-      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
     }
 
-    .heart.small {
-      width: 25px;
-      height: 25px;
+    /* CONTENU */
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 30px 20px 45px;
     }
 
-    .heart.large {
-      width: 38px;
-      height: 38px;
-    }
-
-    /* ACCUEIL */
-
-    header {
+    .header {
       text-align: center;
-      padding: 22px 0 35px;
+      padding-top: 28px;
     }
 
     .logo {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 24px;
-      stroke: white;
-      fill: none;
-      stroke-width: 2;
-      stroke-linejoin: round;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .logo svg {
+      width: 35px;
+      height: 35px;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(27px, 8vw, 43px);
-      font-weight: 500;
-      letter-spacing: 4px;
-      white-space: nowrap;
+      font-size: clamp(34px, 9vw, 48px);
+      font-weight: 800;
+      letter-spacing: 2px;
     }
 
     .subtitle {
-      margin-top: 28px;
-      font-size: 10px;
-      letter-spacing: 3px;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
     }
 
     .intro {
-      margin: 35px 0 0;
-      font-size: 18px;
+      max-width: 310px;
+      margin: 27px auto 40px;
+      text-align: center;
+      font-size: 15px;
       line-height: 1.7;
     }
 
-    /* CARTES D'ACCUEIL */
-
-    .cards {
+    .main-cards {
       display: grid;
-      gap: 22px;
-      margin: 28px 0;
+      gap: 17px;
     }
 
     .card {
@@ -149,45 +117,52 @@
       grid-template-columns: 46px 2px minmax(0, 1fr) 42px;
       align-items: center;
       column-gap: 12px;
-      width: 100%;
       min-height: 140px;
       padding: 20px 17px;
       border: 2px solid white;
       border-radius: 30px;
-      color: white;
-      text-decoration: none;
-      background: rgba(0, 0, 0, 0.04);
+      background: rgba(230, 0, 25, 0.87);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      transition: transform 0.25s ease;
+    }
+
+    .card:active {
+      transform: scale(0.98);
     }
 
     .card-icon {
-      width: 46px;
-      height: 46px;
-      stroke: white;
-      fill: none;
-      stroke-width: 1.7;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .separator {
+    .card-icon svg {
+      width: 42px;
+      height: 42px;
+    }
+
+    .card-divider {
       width: 2px;
-      height: 72px;
+      height: 70px;
       background: white;
+      border-radius: 2px;
     }
 
     .card-text {
       min-width: 0;
     }
 
-    .card h2 {
-      margin: 0 0 10px;
+    .card-title {
+      margin: 0 0 7px;
       font-size: 20px;
+      font-weight: 800;
     }
 
-    .card p {
+    .card-description {
       margin: 0;
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .arrow {
@@ -197,70 +172,59 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: var(--black);
-      color: white;
+      background: black;
     }
 
     .arrow svg {
-      width: 19px;
-      height: 19px;
-      stroke: white;
-      fill: none;
-      stroke-width: 3.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 22px;
+      height: 22px;
     }
 
-    /* BOUTON DECOUVRIR */
-
-    .discover {
+    .discover-wrap {
       display: flex;
       justify-content: center;
+      margin: 52px 0 70px;
+    }
+
+    .discover {
+      display: inline-flex;
       align-items: center;
-      gap: 13px;
-      width: 80%;
-      min-height: 63px;
-      margin: 30px auto;
+      justify-content: center;
+      min-width: 170px;
+      min-height: 49px;
+      padding: 12px 30px;
       border: 2px solid white;
-      border-radius: 50px;
-      background: var(--black);
+      border-radius: 100px;
+      background: black;
       color: white;
-      text-decoration: none;
-      font-size: 19px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 700;
     }
 
-    .discover svg {
-      width: 25px;
-      height: 25px;
-      fill: none;
-      stroke: white;
-      stroke-width: 2;
+    .section {
+      margin-top: 52px;
+      scroll-margin-top: 25px;
     }
 
-    /* BOUTIQUE */
-
-    .shop {
-      padding-top: 35px;
-      scroll-margin-top: 20px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 27px;
+    .section-heading {
       margin: 0 0 12px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
     }
 
-    .section-description {
+    .section-subtitle {
+      max-width: 350px;
+      margin: 0 auto 32px;
       text-align: center;
       font-size: 14px;
       line-height: 1.7;
-      margin: 0 0 28px;
     }
 
     .category-title {
-      font-size: 22px;
-      margin: 35px 0 18px;
+      margin: 30px 0 16px;
+      font-size: 20px;
+      font-weight: 800;
     }
 
     .products {
@@ -271,170 +235,127 @@
 
     .product {
       min-width: 0;
-      border: 2px solid white;
-      border-radius: 25px;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    .placeholder {
-      aspect-ratio: 3 / 4;
-      border-radius: 17px;
-      background: var(--black);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
       padding: 12px;
-      text-align: center;
+      border: 2px solid white;
+      border-radius: 22px;
+      background: rgba(230, 0, 25, 0.9);
     }
 
-    .placeholder svg {
-      width: 43px;
-      height: 43px;
-      stroke: white;
-      fill: none;
-      stroke-width: 1.5;
+    .product-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 14px;
+      background: #161616;
+      overflow: hidden;
     }
 
-    .placeholder span {
-      font-size: 12px;
-      line-height: 1.5;
-      letter-spacing: 1px;
+    .product-placeholder svg {
+      width: 40px;
+      height: 40px;
+      opacity: 0.75;
     }
 
-    .product h3 {
+    .product-name {
+      margin: 13px 0 7px;
       font-size: 15px;
-      margin: 14px 2px 7px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
     }
 
     .product-description {
+      min-height: 35px;
+      margin: 0 0 12px;
       font-size: 12px;
       line-height: 1.5;
-      margin: 0 2px 12px;
-      min-height: 36px;
     }
 
-    .price {
-      font-size: 17px;
-      font-weight: bold;
-      margin: 0 2px 12px;
+    .product-price {
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 800;
     }
 
-    .product-button {
-      display: block;
+    .buy-button {
       width: 100%;
-      padding: 12px 6px;
+      min-height: 38px;
+      padding: 8px;
       border: 1px solid white;
-      border-radius: 30px;
-      background: var(--black);
+      border-radius: 100px;
+      background: black;
       color: white;
       font-size: 12px;
-      font-weight: bold;
-      text-align: center;
+      font-weight: 700;
+      opacity: 0.65;
       cursor: not-allowed;
-      opacity: 0.8;
     }
 
-    .shop-note {
+    .shop-status {
+      margin: 25px 0;
       text-align: center;
       font-size: 12px;
-      line-height: 1.7;
-      margin: 25px 0;
+      line-height: 1.6;
     }
 
-    /* ESPACE VIP */
-
-    .vip {
-      margin-top: 45px;
-      padding: 35px 12px;
-      border-top: 1px solid white;
+    .empty-category {
+      grid-column: 1 / -1;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 18px;
       text-align: center;
-      scroll-margin-top: 20px;
+      font-size: 13px;
     }
 
-    .vip-heading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 16px;
+    .vip-box {
+      padding: 28px 20px;
+      border: 2px solid white;
+      border-radius: 30px;
+      background: rgba(230, 0, 25, 0.9);
+      text-align: center;
     }
 
-    .vip-heading h2 {
-      font-size: 25px;
+    .vip-crown {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 12px;
+    }
+
+    .vip-title {
+      margin: 0 0 14px;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .vip-text {
       margin: 0;
-    }
-
-    .vip-heading svg {
-      width: 32px;
-      height: 32px;
-      color: white;
-      stroke: white;
-      fill: none;
-    }
-
-    .vip p {
       font-size: 14px;
       line-height: 1.8;
     }
 
-    /* BAS DE PAGE */
-
-    .dots {
-      display: flex;
-      justify-content: center;
-      gap: 13px;
-      margin: 26px 0;
-    }
-
-    .dot {
-      width: 11px;
-      height: 11px;
-      background: var(--black);
-      border-radius: 50%;
-    }
-
-    .dot.active {
-      background: white;
-    }
-
-    footer {
+    .footer {
+      margin-top: 65px;
       text-align: center;
-      padding: 25px 0 15px;
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 2px;
       line-height: 1.8;
     }
 
     @media (max-width: 380px) {
-      .page {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
       .card {
-        grid-template-columns: 38px 2px minmax(0, 1fr) 38px;
+        grid-template-columns: 38px 2px minmax(0,1fr) 38px;
         column-gap: 9px;
-        padding: 18px 12px;
+        padding: 16px 12px;
       }
 
-      .card-icon {
-        width: 38px;
-        height: 38px;
+      .card-icon svg {
+        width: 36px;
+        height: 36px;
       }
 
-      .card h2 {
-        font-size: 17px;
-      }
-
-      .card p {
-        font-size: 12px;
-      }
-
-      .separator {
-        height: 65px;
+      .card-title {
+        font-size: 18px;
       }
 
       .arrow {
@@ -442,20 +363,18 @@
         height: 38px;
       }
 
-      h1 {
-        letter-spacing: 2px;
-      }
-
       .products {
         gap: 10px;
       }
+    }
 
-      .product {
-        padding: 8px;
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
       }
 
-      .product h3 {
-        font-size: 13px;
+      .card {
+        transition: none;
       }
     }
   </style>
@@ -463,110 +382,89 @@
 
 <body>
 
-  <!-- ICONES -->
+  <!-- ICONES DE LA BOUTIQUE -->
 
-  <svg width="0" height="0"
-       style="position:absolute"
-       aria-hidden="true">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    style="position:absolute;width:0;height:0;overflow:hidden"
+    aria-hidden="true"
+  >
+    <symbol id="photo-icon" viewBox="0 0 48 48">
+      <rect x="5" y="8" width="38" height="32"
+            rx="5" fill="none"
+            stroke="white" stroke-width="2.5"/>
+      <circle cx="17" cy="19" r="4" fill="white"/>
+      <path d="M9 35L20 25L27 31L33 23L40 32"
+            fill="none" stroke="white"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </symbol>
 
-    <defs>
+    <symbol id="crown-icon" viewBox="0 0 48 48">
+      <path
+        d="M7 17L14 29L24 13L34 29L41 17L38 38H10Z"
+        fill="none"
+        stroke="white"
+        stroke-width="2.5"
+        stroke-linejoin="round"
+      />
+      <circle cx="7" cy="15" r="2.5" fill="white"/>
+      <circle cx="15" cy="11" r="2.5" fill="white"/>
+      <circle cx="24" cy="8" r="2.5" fill="white"/>
+      <circle cx="33" cy="11" r="2.5" fill="white"/>
+      <circle cx="41" cy="15" r="2.5" fill="white"/>
+      <path d="M11 42H37"
+            stroke="white"
+            stroke-width="2.5"
+            stroke-linecap="round"/>
+    </symbol>
 
-      <symbol id="coeur" viewBox="0 0 24 24">
-        <path d="
-          M12 21
-          C9 18.5 2 13.5 2 8.5
-          C2 2.5 9 1.5 12 6
-          C15 1.5 22 2.5 22 8.5
-          C22 13.5 15 18.5 12 21
-          Z
-        "/>
-      </symbol>
+    <symbol id="plane-icon" viewBox="0 0 48 48">
+      <path
+        d="M5 23L43 6L30 43L23 27L5 23Z"
+        fill="none"
+        stroke="white"
+        stroke-width="2.5"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M23 27L43 6"
+        stroke="white"
+        stroke-width="2.5"
+        stroke-linecap="round"
+      />
+    </symbol>
 
-      <symbol id="photo-icon" viewBox="0 0 24 24">
-        <rect x="3" y="5"
-              width="18" height="16" rx="2"/>
-        <circle cx="16" cy="10" r="2"/>
-        <path d="m3 18 6-6 4 4 3-3 5 5"/>
-      </symbol>
-
-      <symbol id="crown-icon" viewBox="0 0 48 48">
-        <path
-          d="
-            M7 15 L13 27 L19 14
-            L24 27 L29 14 L35 27
-            L41 15 L37 37 L11 37 Z
-          "
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linejoin="round"
-        />
-
-        <circle cx="7" cy="12" r="2.3"
-                fill="currentColor" stroke="none"/>
-        <circle cx="19" cy="11" r="2.3"
-                fill="currentColor" stroke="none"/>
-        <circle cx="24" cy="7" r="2.3"
-                fill="currentColor" stroke="none"/>
-        <circle cx="29" cy="11" r="2.3"
-                fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="12" r="2.3"
-                fill="currentColor" stroke="none"/>
-
-        <path d="M11 40 H37"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"/>
-      </symbol>
-
-      <symbol id="plane-icon" viewBox="0 0 24 24">
-        <path d="M22 2 11 13"/>
-        <path d="M22 2 15 22l-4-9-9-4z"/>
-      </symbol>
-
-      <symbol id="arrow-icon" viewBox="0 0 24 24">
-        <path d="M9 4 L17 12 L9 20"/>
-      </symbol>
-
-    </defs>
-
+    <symbol id="arrow-icon" viewBox="0 0 24 24">
+      <path
+        d="M5 12H19M12 5L19 12L12 19"
+        fill="none"
+        stroke="white"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </symbol>
   </svg>
 
-  <div class="page">
+  <!-- ANIMATION DES COEURS -->
 
-    <!-- BARRE SUPERIEURE -->
+  <div id="heart-world" aria-hidden="true">
+    <canvas id="heart-canvas"></canvas>
+  </div>
 
-    <div class="topbar">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="
-          M18 8a6 6 0 0 0-12 0
-          c0 7-3 7-3 9h18
-          c0-2-3-2-3-9
-        "/>
-        <path d="M10 21h4"/>
-      </svg>
+  <!-- BOUTIQUE SACHA_LINN -->
 
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-        <circle cx="12" cy="9" r="3"/>
-        <path d="M5 20c1-7 13-7 14 0"/>
-      </svg>
-    </div>
+  <main class="page">
 
-    <!-- 2 COEURS -->
+    <header class="header">
 
-    <div class="hearts-row">
-      <svg class="heart large"><use href="#coeur"/></svg>
-      <svg class="heart"><use href="#coeur"/></svg>
-    </div>
-
-    <!-- ACCUEIL -->
-
-    <header>
-      <svg class="logo" viewBox="0 0 24 24"
-           aria-hidden="true">
-        <use href="#plane-icon"/>
-      </svg>
+      <div class="logo">
+        <svg aria-hidden="true">
+          <use href="#plane-icon"></use>
+        </svg>
+      </div>
 
       <h1>SACHA_LINN</h1>
 
@@ -575,110 +473,84 @@
       </div>
 
       <p class="intro">
-        Un univers exclusif.<br>
-        Des collections à découvrir.
+        Entrez dans un univers exclusif,
+        où chaque création est pensée
+        pour vous offrir une expérience unique.
       </p>
+
     </header>
 
-    <!-- 3 COEURS -->
-
-    <div class="hearts-row spread">
-      <svg class="heart"><use href="#coeur"/></svg>
-      <svg class="heart small"><use href="#coeur"/></svg>
-      <svg class="heart"><use href="#coeur"/></svg>
-    </div>
-
-    <!-- CARTES PRINCIPALES -->
-
-    <div class="cards">
+    <div class="main-cards">
 
       <a class="card" href="#boutique">
-        <svg class="card-icon" viewBox="0 0 24 24"
-             aria-hidden="true">
-          <use href="#photo-icon"/>
-        </svg>
 
-        <div class="separator"></div>
+        <div class="card-icon">
+          <svg aria-hidden="true">
+            <use href="#photo-icon"></use>
+          </svg>
+        </div>
+
+        <div class="card-divider"></div>
 
         <div class="card-text">
-          <h2>Nos collections</h2>
-          <p>
-            Découvrez nos photos
-            individuelles et nos packs.
+          <h2 class="card-title">Nos collections</h2>
+          <p class="card-description">
+            Découvrez nos photos individuelles
+            et nos packs exclusifs.
           </p>
         </div>
 
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <use href="#arrow-icon"/>
+        <div class="arrow">
+          <svg aria-hidden="true">
+            <use href="#arrow-icon"></use>
           </svg>
-        </span>
+        </div>
+
       </a>
 
       <a class="card" href="#vip">
-        <svg class="card-icon" viewBox="0 0 48 48"
-             aria-hidden="true">
-          <use href="#crown-icon"/>
-        </svg>
 
-        <div class="separator"></div>
+        <div class="card-icon">
+          <svg aria-hidden="true">
+            <use href="#crown-icon"></use>
+          </svg>
+        </div>
+
+        <div class="card-divider"></div>
 
         <div class="card-text">
-          <h2>Espace VIP</h2>
-          <p>
-            Une expérience réservée
-            à nos membres.
+          <h2 class="card-title">Espace VIP</h2>
+          <p class="card-description">
+            Une expérience privilégiée
+            réservée à nos membres.
           </p>
         </div>
 
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <use href="#arrow-icon"/>
+        <div class="arrow">
+          <svg aria-hidden="true">
+            <use href="#arrow-icon"></use>
           </svg>
-        </span>
+        </div>
+
       </a>
 
     </div>
 
-    <!-- 2 COEURS -->
-
-    <div class="hearts-row center">
-      <svg class="heart small"><use href="#coeur"/></svg>
-      <svg class="heart"><use href="#coeur"/></svg>
+    <div class="discover-wrap">
+      <a href="#boutique" class="discover">
+        Découvrir
+      </a>
     </div>
 
-    <!-- BOUTON DECOUVRIR -->
+    <section class="section" id="boutique">
 
-    <a class="discover" href="#boutique">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <use href="#plane-icon"/>
-      </svg>
-      Découvrir
-    </a>
+      <h2 class="section-heading">
+        Nos collections
+      </h2>
 
-    <!-- 3 COEURS -->
-
-    <div class="hearts-row spread">
-      <svg class="heart"><use href="#coeur"/></svg>
-      <svg class="heart small"><use href="#coeur"/></svg>
-      <svg class="heart"><use href="#coeur"/></svg>
-    </div>
-
-    <div class="dots" aria-hidden="true">
-      <span class="dot"></span>
-      <span class="dot active"></span>
-      <span class="dot"></span>
-    </div>
-
-    <!-- BOUTIQUE -->
-
-    <main class="shop" id="boutique">
-
-      <h2 class="section-title">La Boutique</h2>
-
-      <p class="section-description">
-        Explorez notre univers privé.<br>
-        Choisissez une photo ou un pack.
+      <p class="section-subtitle">
+        Explorez l'univers SACHA_LINN
+        et découvrez nos créations exclusives.
       </p>
 
       <h3 class="category-title">
@@ -688,72 +560,73 @@
       <div class="products" id="photos-list"></div>
 
       <h3 class="category-title">
-        Packs de photos
+        Packs exclusifs
       </h3>
 
       <div class="products" id="packs-list"></div>
 
-      <p class="shop-note" id="shop-status">
-        Boutique en préparation.<br>
-        Les prix affichés sont provisoires.<br>
-        Aucun achat n'est encore possible.
+      <p class="shop-status" id="shop-status">
+        Chargement des collections...
       </p>
 
-    </main>
-
-    <!-- ESPACE VIP -->
-
-    <section class="vip" id="vip">
-
-      <div class="vip-heading">
-        <svg viewBox="0 0 48 48" aria-hidden="true">
-          <use href="#crown-icon"/>
-        </svg>
-        <h2>Espace VIP</h2>
-      </div>
-
-      <p>
-        Un espace exclusif SACHA_LINN.<br>
-        Accès réservé à nos futurs membres.
-      </p>
-
-      <p>Bientôt disponible.</p>
     </section>
 
-    <!-- 2 DERNIERS COEURS -->
+    <section class="section" id="vip">
 
-    <div class="hearts-row spread">
-      <svg class="heart"><use href="#coeur"/></svg>
-      <svg class="heart large"><use href="#coeur"/></svg>
-    </div>
+      <div class="vip-box">
 
-    <footer>
-      © SACHA_LINN — PRIVATE EXPERIENCE
+        <svg class="vip-crown" aria-hidden="true">
+          <use href="#crown-icon"></use>
+        </svg>
+
+        <h2 class="vip-title">
+          Espace VIP
+        </h2>
+
+        <p class="vip-text">
+          Un univers encore plus exclusif
+          arrive bientôt chez SACHA_LINN.
+          <br><br>
+          Restez à l'affût de nos prochaines nouveautés.
+        </p>
+
+      </div>
+
+    </section>
+
+    <footer class="footer">
+      SACHA_LINN
+      <br>
+      THE PRIVATE COLLECTION
     </footer>
 
-  </div>
+  </main>
 
   <script>
+    "use strict";
+
     /*
-      SACHA_LINN — Connexion Supabase
+      CONNEXION SUPABASE
 
-      Remplacer uniquement les deux valeurs
-      ci-dessous par celles de ton projet.
+      Remplace uniquement ces deux valeurs.
 
-      Ne jamais utiliser une clé secret
-      ou service_role dans ce fichier.
+      IMPORTANT :
+      - Utilise l'URL publique de ton projet.
+      - Utilise une clé sb_publishable_.
+      - Ne mets JAMAIS de clé secrète ici.
     */
 
     const SUPABASE_URL =
-      "https://uwkvsrpfwoyxikxmvxxr.supabase.co";
+      "COLLE_ICI_TON_URL_SUPABASE";
 
     const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_B4BJ6mipI9RgIBqPd3gocA_YBHefQBN";
+      "COLLE_ICI_TA_CLE_PUBLIQUE_SB_PUBLISHABLE";
 
     /*
-      Produits provisoires affichés
-      tant que les produits Supabase
-      ne sont pas actifs.
+      PRODUITS DE DEMONSTRATION
+
+      Ils s'affichent tant qu'aucun produit
+      actif n'est disponible dans Supabase.
     */
 
     const demoProducts = [
@@ -771,65 +644,71 @@
       },
       {
         name: "Pack Signature",
-        description: "Exemple : 5 photos exclusives.",
+        description: "Pack de 5 photos exclusives.",
         price_stars: 100,
         product_type: "pack"
       },
       {
         name: "Pack Prestige",
-        description: "Exemple : 10 photos exclusives.",
+        description: "Pack de 10 photos exclusives.",
         price_stars: 180,
         product_type: "pack"
       }
     ];
 
-    const photoIcon = `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <use href="#photo-icon"></use>
-      </svg>
-    `;
-
     function createProductCard(product) {
-      const article = document.createElement("article");
-      article.className = "product";
+      const card = document.createElement("article");
+      card.className = "product";
 
       const placeholder = document.createElement("div");
-      placeholder.className = "placeholder";
-      placeholder.innerHTML = photoIcon;
+      placeholder.className = "product-placeholder";
 
-      const placeholderText = document.createElement("span");
-      placeholderText.textContent =
-        product.product_type === "pack"
-          ? "Pack à venir"
-          : "Bientôt disponible";
+      const icon = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+      );
 
-      placeholder.appendChild(placeholderText);
+      icon.setAttribute("viewBox", "0 0 48 48");
 
-      const title = document.createElement("h3");
-      title.textContent = product.name;
+      const use = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "use"
+      );
+
+      use.setAttribute("href", "#photo-icon");
+
+      icon.appendChild(use);
+      placeholder.appendChild(icon);
+
+      const name = document.createElement("h4");
+      name.className = "product-name";
+      name.textContent = product.name || "Collection";
 
       const description = document.createElement("p");
       description.className = "product-description";
-      description.textContent = product.description || "";
+      description.textContent =
+        product.description || "Création exclusive.";
 
-      const price = document.createElement("p");
-      price.className = "price";
-      price.textContent = `⭐ ${product.price_stars} Stars`;
+      const price = document.createElement("div");
+      price.className = "product-price";
+      price.textContent =
+        `${Number(product.price_stars) || 0} ⭐`;
 
       const button = document.createElement("button");
-      button.className = "product-button";
-      button.textContent = "Bientôt disponible";
+      button.className = "buy-button";
+      button.type = "button";
       button.disabled = true;
+      button.textContent = "Bientôt disponible";
 
-      article.append(
+      card.append(
         placeholder,
-        title,
+        name,
         description,
         price,
         button
       );
 
-      return article;
+      return card;
     }
 
     function displayProducts(products) {
@@ -842,18 +721,40 @@
       photosList.replaceChildren();
       packsList.replaceChildren();
 
-      products.forEach((product) => {
-        const card = createProductCard(product);
+      const photos = products.filter(
+        product => product.product_type === "photo"
+      );
 
-        if (product.product_type === "photo") {
-          photosList.appendChild(card);
-        } else if (product.product_type === "pack") {
-          packsList.appendChild(card);
+      const packs = products.filter(
+        product => product.product_type === "pack"
+      );
+
+      function fillCategory(container, items) {
+        if (items.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "empty-category";
+          empty.textContent =
+            "De nouvelles créations arrivent bientôt.";
+
+          container.appendChild(empty);
+          return;
         }
-      });
+
+        items.forEach(product => {
+          container.appendChild(
+            createProductCard(product)
+          );
+        });
+      }
+
+      fillCategory(photosList, photos);
+      fillCategory(packsList, packs);
     }
 
     async function loadProducts() {
+      const status =
+        document.getElementById("shop-status");
+
       displayProducts(demoProducts);
 
       const configured =
@@ -863,15 +764,17 @@
         );
 
       if (!configured) {
+        status.textContent =
+          "Mode démonstration : ajoute ta connexion Supabase.";
         return;
       }
 
       try {
         const endpoint =
-          `${SUPABASE_URL.replace(/\/$/, "")}` +
-          `/rest/v1/collections` +
-          `?select=name,description,price_stars,product_type` +
-          `&is_active=eq.true`;
+          SUPABASE_URL.replace(/\/$/, "") +
+          "/rest/v1/collections" +
+          "?select=name,description,price_stars,product_type" +
+          "&is_active=eq.true";
 
         const response = await fetch(endpoint, {
           headers: {
@@ -881,37 +784,499 @@
 
         if (!response.ok) {
           throw new Error(
-            `Erreur Supabase : ${response.status}`
+            "Erreur Supabase : " + response.status
           );
         }
 
         const products = await response.json();
 
+        if (!Array.isArray(products)) {
+          throw new Error("Réponse Supabase invalide");
+        }
+
         if (products.length > 0) {
           displayProducts(products);
 
-          document.getElementById(
-            "shop-status"
-          ).textContent =
+          status.textContent =
             "Produits chargés depuis Supabase. " +
             "Les achats ne sont pas encore activés.";
+        } else {
+          status.textContent =
+            "Mode démonstration : aucun produit " +
+            "actif dans Supabase.";
         }
 
       } catch (error) {
-        console.error(
-          "Connexion Supabase :",
-          error
-        );
+        console.error(error);
 
-        document.getElementById(
-          "shop-status"
-        ).textContent =
-          "Mode démonstration : " +
-          "connexion aux produits indisponible.";
+        status.textContent =
+          "Mode démonstration : connexion aux " +
+          "produits indisponible.";
       }
     }
 
     loadProducts();
+
+    /*
+      COEURS NOIRS ANIMES
+
+      - 12 coeurs arrondis
+      - Noir profond
+      - Reflets tres discrets
+      - Aucun gros strass gris
+      - Rotations douces
+      - Rebonds sur les parois
+      - Collisions entre les coeurs
+
+      Le rendu utilise Canvas 2D pour rester
+      fluide sur iPhone et dans Telegram.
+    */
+
+    const canvas =
+      document.getElementById("heart-canvas");
+
+    const ctx = canvas.getContext("2d");
+
+    const HEART_COUNT = 12;
+    const hearts = [];
+
+    let screenWidth = 0;
+    let screenHeight = 0;
+    let animationFrame = null;
+    let lastTime = 0;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    function random(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    /*
+      Dessine un coeur tres arrondi.
+
+      Le degrade noir cree un relief naturel.
+      Il n'y a ni cercle gris, ni strass,
+      ni reflet metallique trop marque.
+    */
+
+    function drawHeart(heart) {
+      ctx.save();
+
+      ctx.translate(heart.x, heart.y);
+      ctx.rotate(heart.angle);
+
+      const size = heart.size;
+
+      ctx.scale(size / 100, size / 100);
+
+      ctx.beginPath();
+
+      ctx.moveTo(0, 76);
+
+      ctx.bezierCurveTo(
+        -13, 69,
+        -73, 30,
+        -77, -12
+      );
+
+      ctx.bezierCurveTo(
+        -81, -49,
+        -53, -70,
+        -24, -65
+      );
+
+      ctx.bezierCurveTo(
+        -8, -63,
+        0, -49,
+        0, -42
+      );
+
+      ctx.bezierCurveTo(
+        0, -49,
+        8, -63,
+        24, -65
+      );
+
+      ctx.bezierCurveTo(
+        53, -70,
+        81, -49,
+        77, -12
+      );
+
+      ctx.bezierCurveTo(
+        73, 30,
+        13, 69,
+        0, 76
+      );
+
+      ctx.closePath();
+
+      const gradient = ctx.createRadialGradient(
+        -24, -38, 4,
+        0, 5, 118
+      );
+
+      gradient.addColorStop(0, "#292929");
+      gradient.addColorStop(0.25, "#141414");
+      gradient.addColorStop(0.58, "#080808");
+      gradient.addColorStop(1, "#000000");
+
+      ctx.fillStyle = gradient;
+
+      ctx.shadowColor = "rgba(0,0,0,0.23)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 5;
+
+      ctx.fill();
+
+      ctx.shadowColor = "transparent";
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      /*
+        Petit reflet tres doux,
+        sans tache grise visible.
+      */
+
+      ctx.save();
+      ctx.clip();
+
+      const softLight = ctx.createRadialGradient(
+        -32, -48, 2,
+        -30, -43, 65
+      );
+
+      softLight.addColorStop(
+        0,
+        "rgba(255,255,255,0.055)"
+      );
+
+      softLight.addColorStop(
+        0.55,
+        "rgba(255,255,255,0.018)"
+      );
+
+      softLight.addColorStop(
+        1,
+        "rgba(255,255,255,0)"
+      );
+
+      ctx.fillStyle = softLight;
+      ctx.fillRect(-100, -100, 200, 200);
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    function resizeCanvas() {
+      const dpr = Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
+      screenWidth = window.innerWidth;
+      screenHeight = window.innerHeight;
+
+      canvas.width = Math.round(
+        screenWidth * dpr
+      );
+
+      canvas.height = Math.round(
+        screenHeight * dpr
+      );
+
+      ctx.setTransform(
+        dpr, 0, 0, dpr, 0, 0
+      );
+
+      hearts.forEach(heart => {
+        heart.x = Math.max(
+          heart.radius,
+          Math.min(
+            screenWidth - heart.radius,
+            heart.x
+          )
+        );
+
+        heart.y = Math.max(
+          heart.radius,
+          Math.min(
+            screenHeight - heart.radius,
+            heart.y
+          )
+        );
+      });
+    }
+
+    function createHearts() {
+      hearts.length = 0;
+
+      for (let i = 0; i < HEART_COUNT; i++) {
+        const size = random(23, 39);
+        const radius = size * 0.83;
+
+        let x = radius;
+        let y = radius;
+
+        for (let attempt = 0; attempt < 120; attempt++) {
+          x = random(
+            radius,
+            Math.max(radius, screenWidth - radius)
+          );
+
+          y = random(
+            radius,
+            Math.max(radius, screenHeight - radius)
+          );
+
+          const overlapping = hearts.some(other => {
+            const dx = x - other.x;
+            const dy = y - other.y;
+
+            return Math.hypot(dx, dy) <
+              radius + other.radius + 8;
+          });
+
+          if (!overlapping) {
+            break;
+          }
+        }
+
+        hearts.push({
+          x,
+          y,
+          size,
+          radius,
+          vx: random(-0.32, 0.32),
+          vy: random(-0.32, 0.32),
+          angle: random(-0.5, 0.5),
+          spin: random(-0.002, 0.002),
+          mass: radius * radius
+        });
+      }
+    }
+
+    function bounceWalls(heart) {
+      const r = heart.radius;
+
+      if (heart.x - r < 0) {
+        heart.x = r;
+        heart.vx = Math.abs(heart.vx);
+      }
+
+      if (heart.x + r > screenWidth) {
+        heart.x = screenWidth - r;
+        heart.vx = -Math.abs(heart.vx);
+      }
+
+      if (heart.y - r < 0) {
+        heart.y = r;
+        heart.vy = Math.abs(heart.vy);
+      }
+
+      if (heart.y + r > screenHeight) {
+        heart.y = screenHeight - r;
+        heart.vy = -Math.abs(heart.vy);
+      }
+    }
+
+    function collideHearts() {
+      for (let i = 0; i < hearts.length; i++) {
+        for (let j = i + 1; j < hearts.length; j++) {
+          const a = hearts[i];
+          const b = hearts[j];
+
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+
+          const distance = Math.hypot(dx, dy);
+          const minimum = a.radius + b.radius;
+
+          if (distance >= minimum) {
+            continue;
+          }
+
+          const safeDistance = Math.max(
+            distance,
+            0.0001
+          );
+
+          const nx = distance > 0
+            ? dx / safeDistance
+            : 1;
+
+          const ny = distance > 0
+            ? dy / safeDistance
+            : 0;
+
+          const overlap = minimum - distance;
+
+          const totalMass = a.mass + b.mass;
+
+          const moveA = overlap * (
+            b.mass / totalMass
+          );
+
+          const moveB = overlap * (
+            a.mass / totalMass
+          );
+
+          a.x -= nx * moveA;
+          a.y -= ny * moveA;
+
+          b.x += nx * moveB;
+          b.y += ny * moveB;
+
+          const relativeVX = b.vx - a.vx;
+          const relativeVY = b.vy - a.vy;
+
+          const speedAlongNormal =
+            relativeVX * nx +
+            relativeVY * ny;
+
+          if (speedAlongNormal >= 0) {
+            continue;
+          }
+
+          const restitution = 0.92;
+
+          const impulse =
+            -(1 + restitution) *
+            speedAlongNormal /
+            (1 / a.mass + 1 / b.mass);
+
+          a.vx -= (
+            impulse / a.mass
+          ) * nx;
+
+          a.vy -= (
+            impulse / a.mass
+          ) * ny;
+
+          b.vx += (
+            impulse / b.mass
+          ) * nx;
+
+          b.vy += (
+            impulse / b.mass
+          ) * ny;
+        }
+      }
+    }
+
+    function updateHearts(delta) {
+      for (const heart of hearts) {
+        heart.x += heart.vx * delta;
+        heart.y += heart.vy * delta;
+        heart.angle += heart.spin * delta;
+
+        bounceWalls(heart);
+      }
+
+      collideHearts();
+
+      for (const heart of hearts) {
+        bounceWalls(heart);
+      }
+    }
+
+    function renderHearts() {
+      ctx.clearRect(
+        0, 0,
+        screenWidth,
+        screenHeight
+      );
+
+      for (const heart of hearts) {
+        drawHeart(heart);
+      }
+    }
+
+    function animate(time) {
+      if (!lastTime) {
+        lastTime = time;
+      }
+
+      const delta = Math.min(
+        (time - lastTime) / 16.67,
+        2
+      );
+
+      lastTime = time;
+
+      updateHearts(delta);
+      renderHearts();
+
+      animationFrame =
+        requestAnimationFrame(animate);
+    }
+
+    function startAnimation() {
+      if (!ctx) {
+        return;
+      }
+
+      resizeCanvas();
+      createHearts();
+      renderHearts();
+
+      if (!reduceMotion.matches) {
+        lastTime = 0;
+        animationFrame =
+          requestAnimationFrame(animate);
+      }
+    }
+
+    function handleMotionChange() {
+      if (animationFrame !== null) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+
+      lastTime = 0;
+      renderHearts();
+
+      if (!reduceMotion.matches) {
+        animationFrame =
+          requestAnimationFrame(animate);
+      }
+    }
+
+    window.addEventListener(
+      "resize",
+      resizeCanvas
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.hidden) {
+          if (animationFrame !== null) {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+          }
+        } else if (
+          animationFrame === null &&
+          !reduceMotion.matches
+        ) {
+          lastTime = 0;
+          animationFrame =
+            requestAnimationFrame(animate);
+        }
+      }
+    );
+
+    if (reduceMotion.addEventListener) {
+      reduceMotion.addEventListener(
+        "change",
+        handleMotionChange
+      );
+    }
+
+    startAnimation();
+
   </script>
 
 </body>
